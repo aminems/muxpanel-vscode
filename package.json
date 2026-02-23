@@ -1,0 +1,525 @@
+{
+  "name": "muxpanel",
+  "displayName": "Muxpanel - Systems Engineering & Project Management",
+  "description": "AI-powered systems engineering toolkit. Manage requirements, Gantt charts, tasks, milestones, and trace links. Plan complete projects using natural language with Copilot.",
+  "version": "1.5.1",
+  "publisher": "muxpanel",
+  "icon": "media/muxpanel.png",
+  "author": {
+    "name": "Muxpanel",
+    "url": "https://muxpanel.com"
+  },
+  "homepage": "https://muxpanel.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muxpanel/muxpanel-vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/muxpanel/muxpanel-vscode/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.108.1"
+  },
+  "categories": [
+    "Other",
+    "Visualization",
+    "Chat"
+  ],
+  "keywords": [
+    "systems engineering",
+    "requirements management",
+    "project management",
+    "task management",
+    "gantt chart",
+    "traceability",
+    "copilot",
+    "ai",
+    "DOORS",
+    "Jama",
+    "milestones",
+    "baseline",
+    "impact analysis"
+  ],
+  "activationEvents": [
+    "onChatParticipant:muxpanel.assistant"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "muxpanel.assistant",
+        "fullName": "Muxpanel Assistant",
+        "name": "muxpanel",
+        "description": "Manage requirements, projects, tasks, and notes using natural language",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "create",
+            "description": "Create one or multiple requirements, tasks, notes, or projects"
+          },
+          {
+            "name": "bulk",
+            "description": "Bulk create items - generate complete requirement sets for features"
+          },
+          {
+            "name": "update",
+            "description": "Update/modify existing requirements, tasks, or projects"
+          },
+          {
+            "name": "delete",
+            "description": "Delete items (single or bulk)"
+          },
+          {
+            "name": "schedule",
+            "description": "Manage project schedules, milestones, timelines, and deadlines"
+          },
+          {
+            "name": "trace",
+            "description": "Create, view, and manage trace links between requirements"
+          },
+          {
+            "name": "review",
+            "description": "Create baselines, manage reviews, and clear suspect links"
+          },
+          {
+            "name": "plan",
+            "description": "Autonomously plan a complete project with requirements, tasks, and milestones"
+          },
+          {
+            "name": "switch",
+            "description": "Switch active project context"
+          },
+          {
+            "name": "list",
+            "description": "List requirements, tasks, projects, or notes"
+          },
+          {
+            "name": "status",
+            "description": "Show project status and statistics"
+          },
+          {
+            "name": "find",
+            "description": "Search for items or find suspect links"
+          },
+          {
+            "name": "analyze",
+            "description": "Analyze coverage, impact, or requirements"
+          }
+        ]
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "muxpanel",
+          "title": "Muxpanel",
+          "icon": "media/muxpanel-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "muxpanel": [
+        {
+          "id": "muxpanel.projectsView",
+          "name": "Projects",
+          "icon": "$(project)",
+          "contextualTitle": "Muxpanel Projects"
+        },
+        {
+          "id": "muxpanel.requirementsView",
+          "name": "Requirements",
+          "icon": "$(checklist)",
+          "contextualTitle": "Project Requirements",
+          "when": "muxpanel.hasActiveProject"
+        },
+        {
+          "id": "muxpanel.tasksView",
+          "name": "Tasks",
+          "icon": "$(tasklist)",
+          "contextualTitle": "Project Tasks",
+          "when": "muxpanel.hasActiveProject"
+        },
+        {
+          "id": "muxpanel.notesView",
+          "name": "Notes",
+          "icon": "$(note)",
+          "contextualTitle": "Project Notes",
+          "when": "muxpanel.hasActiveProject"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "muxpanel.openDashboard",
+        "title": "Open Dashboard",
+        "category": "Muxpanel",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "muxpanel.refreshAll",
+        "title": "Refresh All",
+        "category": "Muxpanel",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "muxpanel.addRequirement",
+        "title": "Add Requirement",
+        "category": "Muxpanel",
+        "icon": "$(add)"
+      },
+      {
+        "command": "muxpanel.openRequirement",
+        "title": "Open Requirement",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.refreshRequirements",
+        "title": "Refresh Requirements",
+        "category": "Muxpanel",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "muxpanel.addChildRequirement",
+        "title": "Add Child Requirement",
+        "category": "Muxpanel",
+        "icon": "$(add)"
+      },
+      {
+        "command": "muxpanel.addProject",
+        "title": "Add Project",
+        "category": "Muxpanel",
+        "icon": "$(add)"
+      },
+      {
+        "command": "muxpanel.openProject",
+        "title": "Open Project",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.refreshProjects",
+        "title": "Refresh Projects",
+        "category": "Muxpanel",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "muxpanel.openMilestone",
+        "title": "Open Milestone",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.addTask",
+        "title": "Add Task",
+        "category": "Muxpanel",
+        "icon": "$(add)"
+      },
+      {
+        "command": "muxpanel.openTask",
+        "title": "Open Task",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.refreshTasks",
+        "title": "Refresh Tasks",
+        "category": "Muxpanel",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "muxpanel.completeTask",
+        "title": "Complete Task",
+        "category": "Muxpanel",
+        "icon": "$(check)"
+      },
+      {
+        "command": "muxpanel.toggleFollowUp",
+        "title": "Toggle Follow-up",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.addNote",
+        "title": "Add Note",
+        "category": "Muxpanel",
+        "icon": "$(add)"
+      },
+      {
+        "command": "muxpanel.openNote",
+        "title": "Open Note",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.refreshNotes",
+        "title": "Refresh Notes",
+        "category": "Muxpanel",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "muxpanel.toggleNotePin",
+        "title": "Toggle Pin",
+        "category": "Muxpanel",
+        "icon": "$(pin)"
+      },
+      {
+        "command": "muxpanel.quickAddTask",
+        "title": "Quick Add Task",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.quickAddNote",
+        "title": "Quick Add Note",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.viewTraceabilityMatrix",
+        "title": "View Traceability Matrix",
+        "category": "Muxpanel",
+        "icon": "$(symbol-structure)"
+      },
+      {
+        "command": "muxpanel.generateCoverageReport",
+        "title": "Generate Coverage Report",
+        "category": "Muxpanel",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "muxpanel.analyzeImpact",
+        "title": "Analyze Impact",
+        "category": "Muxpanel",
+        "icon": "$(git-compare)"
+      },
+      {
+        "command": "muxpanel.createBaseline",
+        "title": "Create Baseline",
+        "category": "Muxpanel",
+        "icon": "$(tag)"
+      },
+      {
+        "command": "muxpanel.viewBaselines",
+        "title": "View Baselines",
+        "category": "Muxpanel",
+        "icon": "$(history)"
+      },
+      {
+        "command": "muxpanel.startReview",
+        "title": "Start Review",
+        "category": "Muxpanel",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "muxpanel.viewSuspectLinks",
+        "title": "View Suspect Links",
+        "category": "Muxpanel",
+        "icon": "$(warning)"
+      },
+      {
+        "command": "muxpanel.viewByType",
+        "title": "View by Type",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.viewByStatus",
+        "title": "View by Status",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.viewHierarchy",
+        "title": "View Hierarchy",
+        "category": "Muxpanel"
+      },
+      {
+        "command": "muxpanel.exportRequirements",
+        "title": "Export Requirements",
+        "category": "Muxpanel",
+        "icon": "$(export)"
+      },
+      {
+        "command": "muxpanel.importRequirements",
+        "title": "Import Requirements",
+        "category": "Muxpanel",
+        "icon": "$(import)"
+      },
+      {
+        "command": "muxpanel.selectProject",
+        "title": "Select Active Project",
+        "category": "Muxpanel",
+        "icon": "$(folder-active)"
+      },
+      {
+        "command": "muxpanel.deselectProject",
+        "title": "Clear Active Project",
+        "category": "Muxpanel",
+        "icon": "$(folder)"
+      },
+      {
+        "command": "muxpanel.openGanttChart",
+        "title": "Open Gantt Chart",
+        "category": "Muxpanel",
+        "icon": "$(graph-line)"
+      },
+      {
+        "command": "muxpanel.refreshGantt",
+        "title": "Refresh Gantt Chart",
+        "category": "Muxpanel",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "muxpanel.openDashboard",
+          "when": "view =~ /muxpanel\\./",
+          "group": "navigation@1"
+        },
+        {
+          "command": "muxpanel.addRequirement",
+          "when": "view == muxpanel.requirementsView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "muxpanel.exportRequirements",
+          "when": "view == muxpanel.requirementsView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "muxpanel.refreshRequirements",
+          "when": "view == muxpanel.requirementsView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "muxpanel.addProject",
+          "when": "view == muxpanel.projectsView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "muxpanel.exportRequirements",
+          "when": "view == muxpanel.projectsView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "muxpanel.refreshProjects",
+          "when": "view == muxpanel.projectsView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "muxpanel.addTask",
+          "when": "view == muxpanel.tasksView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "muxpanel.refreshTasks",
+          "when": "view == muxpanel.tasksView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "muxpanel.addNote",
+          "when": "view == muxpanel.notesView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "muxpanel.refreshNotes",
+          "when": "view == muxpanel.notesView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "muxpanel.openGanttChart",
+          "when": "view == muxpanel.projectsView && muxpanel.hasActiveProject",
+          "group": "navigation@5"
+        },
+        {
+          "command": "muxpanel.deselectProject",
+          "when": "view == muxpanel.projectsView && muxpanel.hasActiveProject",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "muxpanel.addChildRequirement",
+          "when": "view == muxpanel.requirementsView && viewItem == requirement",
+          "group": "inline"
+        },
+        {
+          "command": "muxpanel.completeTask",
+          "when": "view == muxpanel.tasksView && viewItem == task",
+          "group": "inline"
+        },
+        {
+          "command": "muxpanel.toggleNotePin",
+          "when": "view == muxpanel.notesView && viewItem =~ /^note/",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "muxpanel.openDashboard"
+        },
+        {
+          "command": "muxpanel.addRequirement"
+        },
+        {
+          "command": "muxpanel.addProject"
+        },
+        {
+          "command": "muxpanel.addTask"
+        },
+        {
+          "command": "muxpanel.addNote"
+        },
+        {
+          "command": "muxpanel.quickAddTask"
+        },
+        {
+          "command": "muxpanel.quickAddNote"
+        },
+        {
+          "command": "muxpanel.refreshAll"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "muxpanel.requirementsView",
+        "contents": "No requirements yet.\n[Add Requirement](command:muxpanel.addRequirement)\n\nGet started by creating your first requirement to track system specifications."
+      },
+      {
+        "view": "muxpanel.projectsView",
+        "contents": "No projects yet.\n[Add Project](command:muxpanel.addProject)\n\nCreate a project to organize your requirements, tasks, and notes."
+      },
+      {
+        "view": "muxpanel.tasksView",
+        "contents": "No tasks yet.\n[Add Task](command:muxpanel.addTask)\n\nStart tracking your work by creating tasks with due dates and follow-ups."
+      },
+      {
+        "view": "muxpanel.notesView",
+        "contents": "No notes yet.\n[Add Note](command:muxpanel.addNote)\n\nCapture ideas, meeting notes, and decisions in organized notes."
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.108.1",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.52.0"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}
